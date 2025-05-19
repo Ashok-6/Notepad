@@ -1,0 +1,96 @@
+
+
+<!-- In api gateway -->
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>2.2.0</version>
+</dependency>
+
+<!-- In microservices -->
+<dependency>
+  <groupId>org.springdoc</groupId>
+  <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+  <version>2.2.0</version>
+</dependency>
+
+
+# Swagger OpenAPI Configuration
+springdoc.api-docs.path=/v3/api-docs
+springdoc.swagger-ui.path=/swagger-ui.html
+
+#url for browser :http://localhost:9091/swagger-ui/index.html
+
+
+appication properties(Api gateway)
+***********************************
+#microservice name
+spring.application.name=api-gateway
+
+#port number
+server.port=8082
+
+## Student Microservice
+spring.cloud.gateway.routes[0].id=student-route
+spring.cloud.gateway.routes[0].uri=http://localhost:9099
+spring.cloud.gateway.routes[0].predicates[0]=Path=/api/student/**
+spring.cloud.gateway.routes[0].filters[0]=RewritePath=/api/student/(?<segment>.*), /$\{segment}
+
+
+# Subject Microservice
+spring.cloud.gateway.routes[1].id=subject-route
+spring.cloud.gateway.routes[1].uri=http://localhost:9098
+spring.cloud.gateway.routes[1].predicates[0]=Path=/api/subject/**
+spring.cloud.gateway.routes[1].filters[0]=RewritePath=/api/subject/(?<segment>.*), /$\{segment}
+
+
+#swagger configaration for student microservice
+springdoc.swagger-ui.urls[0].name=Student Service
+springdoc.swagger-ui.urls[0].url=/api/student/v3/api-docs
+
+#swagger configaration for subject microservice
+springdoc.swagger-ui.urls[1].name=Subject Service
+springdoc.swagger-ui.urls[1].url=/api/subject/v3/api-docs
+
+
+# Swagger OpenAPI Configuration
+springdoc.api-docs.path=/v3/api-docs
+springdoc.swagger-ui.path=/swagger-ui.html
+
+springdoc.api-docs.path=/v3/api-docs
+springdoc.swagger-ui.path=/swagger-ui/index.html
+
+
+ in main applications(micro services)
+*********************
+@OpenAPIDefinition(info = @Info(title = "Project-Management", version = "1.0", description = "Documentation Project-Management v1.0"))
+
+create a car class in main application
+****************************************
+package com.s;
+import org.springframework.context.annotation.Bean;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class CorsConfig {
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")  // Allow all endpoints
+                        .allowedOrigins("*") // You can restrict to "http://localhost:8082" if needed
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*");
+            }
+        };
+    }
+}
+
+#url for browser : http://localhost:8082/swagger-ui.html
+
+
+

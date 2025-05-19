@@ -1,0 +1,15 @@
+ 
+spring.application.name=api-gateway
+server.port=8082
+
+## Student Microservice
+spring.cloud.gateway.routes[0].id=student-route
+spring.cloud.gateway.routes[0].uri=http://localhost:9099
+spring.cloud.gateway.routes[0].predicates[0]=Path=/api/student/**
+
+## Subject Microservice
+spring.cloud.gateway.routes[1].id=subject-route
+spring.cloud.gateway.routes[1].uri=http://localhost:9098
+spring.cloud.gateway.routes[1].predicates[0]=Path=/api/subject/**
+
+

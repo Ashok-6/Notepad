@@ -1,0 +1,27 @@
+
+
+for display jsp page:
+
+you should write this in jsp
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" isELIgnored="false"%>
+
+${name}
+
+
+welcomecontroller.java
+''''''''''''''''''''''
+@RequestMapping(path= "/welcome", method=RequestMethod.GET)
+	public ModelAndView welcome()
+	{
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("name", "ashok");  //display name in jsp
+		mv.setViewName("welcome");
+		return mv;
+	}
+
+for welcome msg in jsp;
+'''''''''''''''
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
